@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "ship.h"
+#include "collision.h"
 
 
 int main()
@@ -10,15 +11,21 @@ int main()
 	sf::RenderWindow app(sf::VideoMode(600,600), "asteroids");
 	sf::Event e;
 	sf::Clock deltaClock;
+	sf::Clock ThrustClock;
+
 
 	//pointers to class
 	ship *ptrShip;
+	collision *ptrCollision;
 
 	//classes
 	ship Ship;
+	collision Collision;
+
 
 	//point to class
 	ptrShip = &Ship;
+	ptrCollision = &Collision;
 	
 	while (app.isOpen())
 	{
@@ -31,6 +38,8 @@ int main()
 		}
 		
 		ptrShip->shipMove(deltaClock);
+
+		ptrCollision->ShipCollisionToWorld(ptrShip);
 
 		app.clear();
 

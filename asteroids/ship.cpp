@@ -7,12 +7,13 @@ ship::ship()
 	this->x = 300;
 	this->y = 300;
 	this->angle =0;
-	this->turnSpeed = 0.002;
-	this->MaxSpeed = 0.15;
+	this->turnSpeed = 0.0025;
+	this->MaxSpeed = 0.1;
 	this->speed =0;
 	this->accel = 0.025;
 	this ->decel = 6;
-	this->pShip.setOrigin(this->pShip.getGlobalBounds().width/2, this->pShip.getGlobalBounds().height/2);
+	this->isPressed = false;
+	this->pShip.setOrigin(this->pShip.getGlobalBounds().width/2, this->pShip.getGlobalBounds().height);
 
 	
 	this->pShip.setPosition(x,y);
@@ -38,7 +39,8 @@ void ship::shipMove(sf::Clock deltaClock)
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		
+		this->isPressed = true;
+		this->turnSpeed = 0.002;
 
 		if(this->speed < this->MaxSpeed)
 		{
@@ -54,13 +56,17 @@ void ship::shipMove(sf::Clock deltaClock)
 	
 	else
 	{
-		if(speed >0)
+		this->isPressed = false;
+
+		if(this->speed >0 && this->isPressed == false)
 		{
-		this->speed -= (this->decel * elasped);
+		this->speed -= (this->decel * (this->elasped * 0.5));
+		this->turnSpeed = 0.0005;
 		}
 		else if(speed <=0)
 		{
 			this->speed = 0;
+			this->turnSpeed = 0.002;
 		}
 	}
 

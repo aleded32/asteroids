@@ -1,4 +1,4 @@
-﻿Build started 23/06/2020 19:17:49.
+﻿Build started 25/06/2020 15:33:50.
      1>Project "D:\GitHub\asteroids\asteroids\asteroids.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"D:\SFML-2.4.0(Win32 - Visual Studio 2012)\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ship.cpp
@@ -6,13 +6,18 @@
      1>d:\github\asteroids\asteroids\ship.cpp(10): warning C4305: '=' : truncation from 'double' to 'float'
      1>d:\github\asteroids\asteroids\ship.cpp(11): warning C4305: '=' : truncation from 'double' to 'float'
      1>d:\github\asteroids\asteroids\ship.cpp(13): warning C4305: '=' : truncation from 'double' to 'float'
-     1>d:\github\asteroids\asteroids\ship.cpp(85): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>d:\github\asteroids\asteroids\ship.cpp(43): warning C4305: '=' : truncation from 'double' to 'float'
+     1>d:\github\asteroids\asteroids\ship.cpp(63): warning C4244: '-=' : conversion from 'double' to 'float', possible loss of data
+     1>d:\github\asteroids\asteroids\ship.cpp(64): warning C4305: '=' : truncation from 'double' to 'float'
+     1>d:\github\asteroids\asteroids\ship.cpp(69): warning C4305: '=' : truncation from 'double' to 'float'
+     1>d:\github\asteroids\asteroids\ship.cpp(91): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GitHub\asteroids\Debug\asteroids.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\SFML-2.4.0(Win32 - Visual Studio 2012)\lib" "sfml-system-d.lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-network-d.lib" "sfml-window-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\GitHub\asteroids\Debug\asteroids.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GitHub\asteroids\Debug\asteroids.lib" /MACHINE:X86 Debug\main.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\GitHub\asteroids\Debug\asteroids.exe" /INCREMENTAL /NOLOGO /LIBPATH:"D:\SFML-2.4.0(Win32 - Visual Studio 2012)\lib" "sfml-system-d.lib" "sfml-graphics-d.lib" "sfml-audio-d.lib" "sfml-network-d.lib" "sfml-window-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\GitHub\asteroids\Debug\asteroids.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\GitHub\asteroids\Debug\asteroids.lib" /MACHINE:X86 Debug\collision.obj
+         Debug\main.obj
          Debug\ship.obj
          asteroids.vcxproj -> D:\GitHub\asteroids\Debug\asteroids.exe
      1>Done Building Project "D:\GitHub\asteroids\asteroids\asteroids.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.47
+Time Elapsed 00:00:01.12
