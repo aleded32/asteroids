@@ -31,43 +31,49 @@ void ship::drawShip(sf::RenderWindow& app)
 	app.draw(this->pShip);
 }
 
-void ship::shipMove(sf::Clock deltaClock)
+void ship::shipMove(sf::Clock deltaClock,sf::Clock& thrustClock)
 {
 	this->dt = deltaClock.restart().asSeconds();
 	this->elasped = deltaClock.getElapsedTime().asSeconds();
-	
+	this->thrustTime = thrustClock.getElapsedTime().asSeconds();
+	std::cout << this->isPressed << std::endl;
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		this->isPressed = true;
-		this->turnSpeed = 0.1;
-
-		if(this->speed < this->MaxSpeed)
+		if(this->isPressed == true)
 		{
-			this->speed += this->accel;
-		}
-		else if(this->speed >= this->MaxSpeed)
-		{
-			this->speed = this->MaxSpeed;
-		}
-		
-		
-	}
-	
-	else
-	{
-		this->isPressed = false;
-
-		if(this->speed >0 && this->isPressed == false)
-		{
-		this->speed -= (this->decel * this->elasped);
-		this->turnSpeed = 0.01;
-		}
-		else if(speed <=0)
-		{
-			this->speed = 0;
 			this->turnSpeed = 0.1;
+
+			if(this->speed < this->MaxSpeed)
+			{
+				this->speed += this->accel;
+			}
+			else if(this->speed >= this->MaxSpeed)
+			{
+				this->speed = this->MaxSpeed;
+			}
 		}
+		else if(this->speed >0 && this->isPressed == false )
+			{
+				this->speed -= (this->decel * this->elasped);
+				this->turnSpeed = 0.01;
+			}
+		
+		
+		if(this->thrustTime >=5)
+		{
+			this->isPressed = false;
+		}
+		else if(this->thrustTime < 5)
+		{
+			this->isPressed = true;
+		}
+
+			
+	
+	
+		
+		
 	}
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -83,7 +89,13 @@ void ship::shipMove(sf::Clock deltaClock)
 		
 	}
 
+	if(speed <=0)
+		{
+			this->speed = 0;
+			this->turnSpeed = 0.1;
+			thrustClock.restart();
 	
+		}
 
 	this->x += sin(angle) * speed;
 	this->y -= cos(angle) * speed;

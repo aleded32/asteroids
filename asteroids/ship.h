@@ -13,19 +13,18 @@ public:
 
 	sf::RectangleShape pShip;
 	float x,y, speed;
-	
+	float turnSpeed, angle, MaxSpeed, accel, decel;
 	ship();
 	~ship();
 
 	void drawShip(sf::RenderWindow& app);
-	void shipMove(sf::Clock deltaClock);
-	
+	void shipMove(sf::Clock deltaClock, sf::Clock& thrustClock);
 
 private:
 
-	float turnSpeed, angle, MaxSpeed, accel, decel;
 	float elasped;
 	float dt;
 	bool isPressed;
+	float thrustTime;
 
 };

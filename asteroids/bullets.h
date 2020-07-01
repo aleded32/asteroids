@@ -15,17 +15,17 @@ public:
 
 	sf::RectangleShape Bullet;
 	bool isfiring;
-	
-
+	float x,y, Bspeed;
+	float velocity;
+	float bulletSpawn;
+	float currentAngle;
 	bullet(ship Ship);
 	~bullet();
 
-	void draw(sf::RenderWindow& app,  std::vector<bullet> bullets);
-	void move(ship Ship);
 
 
 private:
 
-	float x,y, Bspeed;
+	
 
 };
