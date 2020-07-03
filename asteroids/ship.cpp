@@ -36,7 +36,7 @@ void ship::shipMove(sf::Clock deltaClock,sf::Clock& thrustClock)
 	this->dt = deltaClock.restart().asSeconds();
 	this->elasped = deltaClock.getElapsedTime().asSeconds();
 	this->thrustTime = thrustClock.getElapsedTime().asSeconds();
-	std::cout << this->isPressed << std::endl;
+	
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
@@ -52,27 +52,7 @@ void ship::shipMove(sf::Clock deltaClock,sf::Clock& thrustClock)
 			{
 				this->speed = this->MaxSpeed;
 			}
-		}
-		else if(this->speed >0 && this->isPressed == false )
-			{
-				this->speed -= (this->decel * this->elasped);
-				this->turnSpeed = 0.01;
-			}
-		
-		
-		if(this->thrustTime >=5)
-		{
-			this->isPressed = false;
-		}
-		else if(this->thrustTime < 5)
-		{
-			this->isPressed = true;
-		}
-
-			
-	
-	
-		
+		}	
 		
 	}
 
@@ -95,6 +75,21 @@ void ship::shipMove(sf::Clock deltaClock,sf::Clock& thrustClock)
 			this->turnSpeed = 0.1;
 			thrustClock.restart();
 	
+		}
+	else if(this->speed >0 && this->isPressed == false )
+			{
+				this->speed -= (this->decel * this->elasped);
+				this->turnSpeed = 0.01;
+			}
+		
+		
+		if(this->thrustTime >=5)
+		{
+			this->isPressed = false;
+		}
+		else if(this->thrustTime < 5)
+		{
+			this->isPressed = true;
 		}
 
 	this->x += sin(angle) * speed;

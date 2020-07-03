@@ -24,3 +24,14 @@ void collision::ShipCollisionToWorld(ship *Ship)
 		Ship->speed = Ship->speed;
 	}
 }
+
+void collision::bulletsCollision(std::vector<bullet>& bullets)
+{
+	for(int i = 0; i < bullets.size(); i++)
+	{
+		if(bullets[i].y > 599 || bullets[i].y < 0 || bullets[i].x > 599 || bullets[i].x < 0)
+		{
+			bullets.erase(bullets.begin() + i);
+		}
+	}
+}

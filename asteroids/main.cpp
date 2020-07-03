@@ -54,13 +54,9 @@ int main()
 
 		ptrCollision->ShipCollisionToWorld(ptrShip);
 
-		
-		
-
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-			
-			if(bulletSpawn >= 1)
+			if(bulletSpawn >= 0.5)
 			{
 				Bullet.x = ptrShip->x;
 				Bullet.y = ptrShip->y;
@@ -68,40 +64,23 @@ int main()
 				bullets.push_back(bullet(Bullet));
 				bulletClock.restart();
 			}
-
-			
 		}
 		
 		for(size_t i = 0; i < bullets.size(); i++)
-	{
+		{
 
 			bullets[i].x += sin(bullets[i].currentAngle) * 10.0f;
 			bullets[i].y -= cos(bullets[i].currentAngle) * 10.0f;
-
-		if(bullets[i].y > 599 || bullets[i].y < 0 || bullets[i].x > 599 || bullets[i].x < 0)
-		{
-			//bullets.erase(bullets.begin() + i);
+			std::cout << bullets.size() << std::endl;
+			bullets[i].Bullet.setPosition(bullets[i].x,bullets[i].y);
 		}
-		
-		
-		std::cout << bullets.size() << std::endl;
 
-		//bullets[i].Bullet.setRotation(ptrShip->angle*180/3.14);
-		bullets[i].Bullet.setPosition(bullets[i].x,bullets[i].y);
-		
-		
-		
-	}
+		ptrCollision->bulletsCollision(bullets);
 
 		app.clear();
 
 		ptrShip->drawShip(app);
 		
-		
-
-	
-	
-	
 
 	for(size_t i = 0; i < bullets.size(); i++)
 	{
@@ -114,7 +93,7 @@ int main()
 		app.display();
 	}
 
-	//getchar();
+	
 	return 0;
 
 }

@@ -5,7 +5,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "ship.h"
-#include "collision.h"
 
 
 
