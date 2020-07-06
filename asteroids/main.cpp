@@ -5,7 +5,38 @@
 #include "ship.h"
 #include "collision.h"
 #include "bullets.h"
+#include "enemy.h"
+#include "stdlib.h"
 #include <vector>
+
+
+void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& x, float& y, float& asteroidSpawning, int enemySpawnX[3], int enemySpawnY[2], enemy asteroid, sf::RenderWindow& app)
+{
+	srand(time(NULL));
+	asteroidSpawning = asteroidSpawn.getElapsedTime().asSeconds();
+
+	int randSpawnX = rand()% 6;
+	int randSpawnY = rand()% 2;
+	asteroid.x = (float)enemySpawnX[randSpawnX];
+	asteroid.y = (float)enemySpawnY[randSpawnY]; 
+
+
+	if(asteroidSpawning >= 2)
+	{
+		
+		asteroids.push_back(enemy(asteroid));	
+		
+		asteroidSpawn.restart();
+	}
+
+	for(int i = 0; i < asteroids.size(); i++)
+		{
+			asteroids[i].asteroid.setPosition(asteroids[i].x, asteroids[i].y);
+
+			app.draw(asteroids[i].asteroid);
+		}
+}
+
 
 
 int main()
@@ -16,27 +47,34 @@ int main()
 	sf::Clock deltaClock;
 	sf::Clock bulletClock;
 	sf::Clock thrustClock;
+	sf::Clock asteroidSpawn;
 	app.setFramerateLimit(60);
 
 	float bulletSpawn;
 
 	std::vector<bullet> bullets;
+	std::vector<enemy> asteroids;
 
 	//pointers to class
 	ship *ptrShip;
 	collision *ptrCollision;
+	enemy *ptrEnemy;
 	
 	//classes
 	ship Ship;
 	collision Collision;
 	bullet Bullet(Ship);
+	enemy asteroid;
+	
 
 	//point to class
 	ptrShip = &Ship;
 	ptrCollision = &Collision;
-	
+	ptrEnemy = &asteroid;
 
-	
+	//enemySpawn;
+	int enemySpawnX[6] = {10, 300, 599};
+	int enemySpawnY[2] = {10, 590};
 	
 	while (app.isOpen())
 	{
@@ -53,7 +91,8 @@ int main()
 		ptrShip->shipMove(deltaClock, thrustClock);
 
 		ptrCollision->ShipCollisionToWorld(ptrShip);
-
+		
+		//bullet
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			if(bulletSpawn >= 0.5)
@@ -71,7 +110,6 @@ int main()
 
 			bullets[i].x += sin(bullets[i].currentAngle) * 10.0f;
 			bullets[i].y -= cos(bullets[i].currentAngle) * 10.0f;
-			std::cout << bullets.size() << std::endl;
 			bullets[i].Bullet.setPosition(bullets[i].x,bullets[i].y);
 		}
 
@@ -82,13 +120,18 @@ int main()
 		ptrShip->drawShip(app);
 		
 
-	for(size_t i = 0; i < bullets.size(); i++)
-	{
+		for(size_t i = 0; i < bullets.size(); i++)
+		{
 		
-		app.draw(bullets[i].Bullet);
+			app.draw(bullets[i].Bullet);
 
-	}	
+		}	
+	
+		enemySpawn(asteroids, asteroidSpawn, ptrEnemy->x, ptrEnemy->y, ptrEnemy->EnemySpawn, enemySpawnX, enemySpawnY, asteroid, app);
+
 		
+
+		std::cout << asteroids.size() << std::endl;
 
 		app.display();
 	}
