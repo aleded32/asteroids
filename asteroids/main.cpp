@@ -10,18 +10,16 @@
 #include <vector>
 
 
-void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& x, float& y, float& asteroidSpawning, int enemySpawnX[3], int enemySpawnY[2], enemy asteroid, sf::RenderWindow& app)
+void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& asteroidSpawning, int randSpawnX, int randSpawnY,int enemySpawnX[3], int enemySpawnY[2], enemy asteroid, sf::RenderWindow& app)
 {
-	srand(time(NULL));
+	
 	asteroidSpawning = asteroidSpawn.getElapsedTime().asSeconds();
 
-	int randSpawnX = rand()% 6;
-	int randSpawnY = rand()% 2;
+		
 	asteroid.x = (float)enemySpawnX[randSpawnX];
-	asteroid.y = (float)enemySpawnY[randSpawnY]; 
+	asteroid.y = (float)enemySpawnY[randSpawnY];
 
-
-	if(asteroidSpawning >= 2)
+	if(asteroidSpawning >= 1)
 	{
 		
 		asteroids.push_back(enemy(asteroid));	
@@ -31,17 +29,78 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 
 	for(int i = 0; i < asteroids.size(); i++)
 		{
-			asteroids[i].asteroid.setPosition(asteroids[i].x, asteroids[i].y);
 
 			app.draw(asteroids[i].asteroid);
 		}
 }
 
 
+void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, int randSpawnX)
+{
+ 
+	int  i = 0;
+
+	for(i = 0; i< asteroids.size(); i++)
+	{
+		if(asteroids[i].randSpawnY == 0)
+		{
+			if(asteroids[i].randSpawnX == 0)
+			{
+			
+					asteroids[i].x -= sin(50) * asteroid->Espeed;
+					asteroids[i].y += cos(50) * asteroid->Espeed; 
+
+			
+			}
+			else if(asteroids[i].randSpawnX == 1)
+			{
+		
+					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].y += cos(50) * asteroid->Espeed; 
+			
+			}
+			else if(asteroids[i].randSpawnX == 2)
+			{
+			
+					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].y += cos(50) * asteroid->Espeed; 
+			
+			}
+		}
+		else if(asteroids[i].randSpawnY == 1)
+		{
+			if(asteroids[i].randSpawnX == 0)
+			{
+			
+					asteroids[i].x -= sin(50) * asteroid->Espeed;
+					asteroids[i].y -= cos(50) * asteroid->Espeed; 
+			
+			}
+			else if(asteroids[i].randSpawnX == 1)
+			{
+			
+					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].y -= cos(50) * asteroid->Espeed; 
+			
+			}
+			else if(asteroids[i].randSpawnX == 2)
+			{
+			
+					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].y -= cos(50) * asteroid->Espeed; 
+			
+			}
+
+		}
+
+		asteroids[i].asteroid.setPosition(asteroids[i].x, asteroids[i].y);
+	}
+}
+
 
 int main()
 {
-	
+	srand(time(NULL));
 	sf::RenderWindow app(sf::VideoMode(600,600), "asteroids");
 	sf::Event e;
 	sf::Clock deltaClock;
@@ -73,8 +132,9 @@ int main()
 	ptrEnemy = &asteroid;
 
 	//enemySpawn;
-	int enemySpawnX[6] = {10, 300, 599};
+	int enemySpawnX[3] = {10, 300, 599};
 	int enemySpawnY[2] = {10, 590};
+
 	
 	while (app.isOpen())
 	{
@@ -85,12 +145,20 @@ int main()
 				app.close();
 			}
 		}
+
+		ptrEnemy->randSpawnX = rand()% 3;
+		ptrEnemy->randSpawnY = rand()% 2;
+
 		
+	
+
 		bulletSpawn = bulletClock.getElapsedTime().asSeconds();
 
 		ptrShip->shipMove(deltaClock, thrustClock);
 
 		ptrCollision->ShipCollisionToWorld(ptrShip);
+
+		
 		
 		//bullet
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -111,15 +179,22 @@ int main()
 			bullets[i].x += sin(bullets[i].currentAngle) * 10.0f;
 			bullets[i].y -= cos(bullets[i].currentAngle) * 10.0f;
 			bullets[i].Bullet.setPosition(bullets[i].x,bullets[i].y);
+
+
+			
+			
 		}
 
 		ptrCollision->bulletsCollision(bullets);
+		
+		
 
 		app.clear();
 
 		ptrShip->drawShip(app);
 		
-
+		
+		
 		for(size_t i = 0; i < bullets.size(); i++)
 		{
 		
@@ -127,11 +202,11 @@ int main()
 
 		}	
 	
-		enemySpawn(asteroids, asteroidSpawn, ptrEnemy->x, ptrEnemy->y, ptrEnemy->EnemySpawn, enemySpawnX, enemySpawnY, asteroid, app);
+		enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
+		enemyMove(asteroids, ptrEnemy->randSpawnY, ptrEnemy, ptrEnemy->randSpawnX);
+		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip);
 
 		
-
-		std::cout << asteroids.size() << std::endl;
 
 		app.display();
 	}

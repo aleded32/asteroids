@@ -16,6 +16,8 @@ public:
 	float velocity;
 	float EnemySpawn;
 	float currentAngle;
+	int randSpawnX;
+	int randSpawnY;
 
 	enemy();
 	~enemy();

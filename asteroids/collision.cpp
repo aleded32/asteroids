@@ -35,3 +35,28 @@ void collision::bulletsCollision(std::vector<bullet>& bullets)
 		}
 	}
 }
+
+
+void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship)
+{
+
+	int collisionDistance;
+
+	for(int i = 0; i < enemies.size() && i < bullets.size(); i++)
+	{
+
+		collisionDistance = sqrt(pow(enemies[i].x - bullets[i].x, 2.0f) + pow(enemies[i].y - bullets[i].y, 2.0f));
+
+		if(enemies[i].y > 599 || enemies[i].y < 0 || enemies[i].x > 599 || enemies[i].x < 0)
+		{
+			enemies.erase(enemies.begin() + i);
+		}
+		else if(collisionDistance < 60 && collisionDistance > 0)
+		{
+			enemies.erase(enemies.begin() + i);
+			bullets.erase(bullets.begin() + i);
+		}
+		
+		std::cout << collisionDistance << std::endl;
+	}
+}
