@@ -37,26 +37,31 @@ void collision::bulletsCollision(std::vector<bullet>& bullets)
 }
 
 
-void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship)
+void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool& isDestroyed)
 {
 
 	int collisionDistance;
 
-	for(int i = 0; i < enemies.size() && i < bullets.size(); i++)
+	
+	for(int i = 0; i < enemies.size(); i++)
 	{
-
-		collisionDistance = sqrt(pow(enemies[i].x - bullets[i].x, 2.0f) + pow(enemies[i].y - bullets[i].y, 2.0f));
-
-		if(enemies[i].y > 599 || enemies[i].y < 0 || enemies[i].x > 599 || enemies[i].x < 0)
+		for(int j = 0; j < bullets.size(); j++)
 		{
-			enemies.erase(enemies.begin() + i);
-		}
-		else if(collisionDistance < 60 && collisionDistance > 0)
-		{
-			enemies.erase(enemies.begin() + i);
-			bullets.erase(bullets.begin() + i);
-		}
+			collisionDistance = sqrt(abs(powf(enemies[i].x - bullets[j].x, 2.0f)) + abs(powf(enemies[i].y - bullets[j].y, 2.0f)));
+
+
+			if(enemies[i].y > 599 || enemies[i].y < 0 || enemies[i].x > 599 || enemies[i].x < 0)
+			{
+				enemies.erase(enemies.begin() + i);
+			}
+			else if(collisionDistance < enemies[i].asteroid.getSize().x && enemies[i].asteroid.getSize().y)
+			{
+				isDestroyed = true;
+				enemies.erase(enemies.begin() + i);
+				bullets.erase(bullets.begin() + j);
+			}
 		
-		std::cout << collisionDistance << std::endl;
+			
+		}
 	}
 }

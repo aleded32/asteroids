@@ -21,6 +21,6 @@ public:
 
 	void bulletsCollision(std::vector<bullet>& bullets);
 
-	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship);
+	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool& isDestroyed);
 
 };

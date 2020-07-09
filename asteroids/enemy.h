@@ -15,14 +15,33 @@ public:
 	float x,y, Espeed;
 	float velocity;
 	float EnemySpawn;
-	float currentAngle;
+	float randAngle;
 	int randSpawnX;
 	int randSpawnY;
+	bool isDestroyed;
 
 	enemy();
 	~enemy();
 
 
 private:	
+
+};
+
+
+class smallAsteroid : public enemy
+{
+	public:
+
+	/*sf::RectangleShape asteroid;
+	float x,y, Espeed;
+	float velocity;
+	float EnemySpawn;
+	float randAngle;
+	int randSpawnX;
+	int randSpawnY;
+	*/
+	smallAsteroid();
+	~smallAsteroid();
 
 };

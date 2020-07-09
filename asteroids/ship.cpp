@@ -79,7 +79,7 @@ void ship::shipMove(sf::Clock deltaClock,sf::Clock& thrustClock)
 	else if(this->speed >0 && this->isPressed == false )
 			{
 				this->speed -= (this->decel * this->elasped);
-				this->turnSpeed = 0.01;
+				this->turnSpeed = 0.1;
 			}
 		
 		

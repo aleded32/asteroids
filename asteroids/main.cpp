@@ -34,20 +34,50 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 		}
 }
 
+void sAsteroidSpawn(std::vector<smallAsteroid>& sAsteroids, std::vector<enemy>& asteroids, sf::RenderWindow& app, smallAsteroid sAsteroid, enemy *asteroid)
+{
+
+	
+		
+	
+		
+
+
+	for(size_t i = 0; i < sAsteroids.size(); i++)
+	{
+		for(size_t j = 0; j < asteroids.size(); j++)
+		{
+		
+			
+			sAsteroids[i].x = asteroids[j].x;
+			sAsteroids[i].y = asteroids[j].y;
+
+			app.draw(sAsteroids[i].asteroid);
+			sAsteroids[i].asteroid.setPosition(sAsteroids[i].x, sAsteroids[i].y);
+			
+		}
+	}
+
+
+}
+
 
 void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, int randSpawnX)
 {
  
 	int  i = 0;
+	
 
 	for(i = 0; i< asteroids.size(); i++)
 	{
 		if(asteroids[i].randSpawnY == 0)
 		{
+				asteroid->randAngle = rand()%90 + 50;
+
 			if(asteroids[i].randSpawnX == 0)
 			{
 			
-					asteroids[i].x -= sin(50) * asteroid->Espeed;
+					asteroids[i].x -= sin(asteroids[i].randAngle) * asteroid->Espeed;
 					asteroids[i].y += cos(50) * asteroid->Espeed; 
 
 			
@@ -55,38 +85,40 @@ void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, i
 			else if(asteroids[i].randSpawnX == 1)
 			{
 		
-					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
 					asteroids[i].y += cos(50) * asteroid->Espeed; 
 			
 			}
 			else if(asteroids[i].randSpawnX == 2)
 			{
 			
-					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
 					asteroids[i].y += cos(50) * asteroid->Espeed; 
 			
 			}
 		}
 		else if(asteroids[i].randSpawnY == 1)
 		{
+			asteroid->randAngle = rand()%90;
+
 			if(asteroids[i].randSpawnX == 0)
 			{
 			
-					asteroids[i].x -= sin(50) * asteroid->Espeed;
+					asteroids[i].x -= sin(asteroids[i].randAngle) * asteroid->Espeed;
 					asteroids[i].y -= cos(50) * asteroid->Espeed; 
 			
 			}
 			else if(asteroids[i].randSpawnX == 1)
 			{
 			
-					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
 					asteroids[i].y -= cos(50) * asteroid->Espeed; 
 			
 			}
 			else if(asteroids[i].randSpawnX == 2)
 			{
 			
-					asteroids[i].x += sin(50) * asteroid->Espeed;
+					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
 					asteroids[i].y -= cos(50) * asteroid->Espeed; 
 			
 			}
@@ -113,23 +145,27 @@ int main()
 
 	std::vector<bullet> bullets;
 	std::vector<enemy> asteroids;
+	std::vector<smallAsteroid> smallAsteroids;
 
 	//pointers to class
 	ship *ptrShip;
 	collision *ptrCollision;
 	enemy *ptrEnemy;
+	smallAsteroid *ptrSAsteroid;
 	
 	//classes
 	ship Ship;
 	collision Collision;
 	bullet Bullet(Ship);
 	enemy asteroid;
+	smallAsteroid sAsteroid;
 	
 
 	//point to class
 	ptrShip = &Ship;
 	ptrCollision = &Collision;
 	ptrEnemy = &asteroid;
+	ptrSAsteroid = &sAsteroid;
 
 	//enemySpawn;
 	int enemySpawnX[3] = {10, 300, 599};
@@ -148,7 +184,7 @@ int main()
 
 		ptrEnemy->randSpawnX = rand()% 3;
 		ptrEnemy->randSpawnY = rand()% 2;
-
+	
 		
 	
 
@@ -204,9 +240,18 @@ int main()
 	
 		enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
 		enemyMove(asteroids, ptrEnemy->randSpawnY, ptrEnemy, ptrEnemy->randSpawnX);
-		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip);
 
+		if(ptrEnemy->isDestroyed == true)
+		{
+			smallAsteroids.push_back(smallAsteroid(sAsteroid));
+			ptrEnemy->isDestroyed = false;
+		}
+		sAsteroidSpawn(smallAsteroids, asteroids, app, sAsteroid, ptrEnemy);
+
+
+		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed);
 		
+		std::cout << ptrEnemy->isDestroyed << std::endl;
 
 		app.display();
 	}
