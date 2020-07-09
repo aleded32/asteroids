@@ -14,7 +14,7 @@ ship::ship()
 	this ->decel = 4000;
 	this->isPressed = false;
 	this->pShip.setOrigin(this->pShip.getGlobalBounds().width/2, this->pShip.getGlobalBounds().height);
-
+	
 	
 	this->pShip.setPosition(x,y);
 	

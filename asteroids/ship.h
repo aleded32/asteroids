@@ -14,6 +14,8 @@ public:
 	sf::RectangleShape pShip;
 	float x,y, speed;
 	float turnSpeed, angle, MaxSpeed, accel, decel;
+	
+
 	ship();
 	~ship();
 
@@ -26,5 +28,6 @@ private:
 	float dt;
 	bool isPressed;
 	float thrustTime;
+	
 
 };

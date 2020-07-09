@@ -142,6 +142,7 @@ int main()
 	app.setFramerateLimit(60);
 
 	float bulletSpawn;
+	bool isGameOver = false;
 
 	std::vector<bullet> bullets;
 	std::vector<enemy> asteroids;
@@ -182,6 +183,7 @@ int main()
 			}
 		}
 
+		
 		ptrEnemy->randSpawnX = rand()% 3;
 		ptrEnemy->randSpawnY = rand()% 2;
 	
@@ -195,7 +197,8 @@ int main()
 		ptrCollision->ShipCollisionToWorld(ptrShip);
 
 		
-		
+	if(isGameOver != true)
+	{
 		//bullet
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
@@ -223,37 +226,42 @@ int main()
 
 		ptrCollision->bulletsCollision(bullets);
 		
-		
+	}
 
 		app.clear();
 
-		ptrShip->drawShip(app);
-		
-		
-		
-		for(size_t i = 0; i < bullets.size(); i++)
-		{
-		
-			app.draw(bullets[i].Bullet);
 
-		}	
+		if(isGameOver != true)
+		{
+			ptrShip->drawShip(app);
+		
+		
+		
+			for(size_t i = 0; i < bullets.size(); i++)
+			{
+		
+				app.draw(bullets[i].Bullet);
+
+			}	
 	
-		enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
-		enemyMove(asteroids, ptrEnemy->randSpawnY, ptrEnemy, ptrEnemy->randSpawnX);
+			enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
+			enemyMove(asteroids, ptrEnemy->randSpawnY, ptrEnemy, ptrEnemy->randSpawnX);
 
-		if(ptrEnemy->isDestroyed == true)
-		{
-			smallAsteroids.push_back(smallAsteroid(sAsteroid));
-			ptrEnemy->isDestroyed = false;
-		}
-		sAsteroidSpawn(smallAsteroids, asteroids, app, sAsteroid, ptrEnemy);
+			if(ptrEnemy->isDestroyed == true)
+			{
+				//smallAsteroids.push_back(smallAsteroid(sAsteroid));
+				ptrEnemy->isDestroyed = false;
+			}
+			sAsteroidSpawn(smallAsteroids, asteroids, app, sAsteroid, ptrEnemy);
 
 
-		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed);
+			
 		
-		std::cout << ptrEnemy->isDestroyed << std::endl;
+			std::cout << isGameOver << std::endl;
+		}
+			ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed, isGameOver);
 
-		app.display();
+			app.display();
 	}
 
 	
