@@ -21,14 +21,14 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 
 	if(asteroidSpawning >= 1)
 	{
-		
 		asteroids.push_back(enemy(asteroid));	
-		
 		asteroidSpawn.restart();
 	}
 
 	for(int i = 0; i < asteroids.size(); i++)
 		{
+
+			asteroids[i].asteroid.setPosition(asteroids[i].x, asteroids[i].y);
 
 			app.draw(asteroids[i].asteroid);
 		}
@@ -37,25 +37,20 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 void sAsteroidSpawn(std::vector<smallAsteroid>& sAsteroids, std::vector<enemy>& asteroids, sf::RenderWindow& app, smallAsteroid sAsteroid, enemy *asteroid)
 {
 
-	
-		
-	
-		
-
+	sAsteroid.x = asteroid->x;
+	sAsteroid.y = asteroid->y;
 
 	for(size_t i = 0; i < sAsteroids.size(); i++)
 	{
-		for(size_t j = 0; j < asteroids.size(); j++)
-		{
 		
 			
-			sAsteroids[i].x = asteroids[j].x;
-			sAsteroids[i].y = asteroids[j].y;
 
 			app.draw(sAsteroids[i].asteroid);
+
+
 			sAsteroids[i].asteroid.setPosition(sAsteroids[i].x, sAsteroids[i].y);
 			
-		}
+		
 	}
 
 
@@ -66,7 +61,6 @@ void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, i
 {
  
 	int  i = 0;
-	
 
 	for(i = 0; i< asteroids.size(); i++)
 	{
@@ -78,7 +72,7 @@ void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, i
 			{
 			
 					asteroids[i].x -= sin(asteroids[i].randAngle) * asteroid->Espeed;
-					asteroids[i].y += cos(50) * asteroid->Espeed; 
+					asteroids[i].y += asteroid->Espeed; 
 
 			
 			}
@@ -86,14 +80,14 @@ void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, i
 			{
 		
 					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
-					asteroids[i].y += cos(50) * asteroid->Espeed; 
+					asteroids[i].y += asteroid->Espeed; 
 			
 			}
 			else if(asteroids[i].randSpawnX == 2)
 			{
 			
 					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
-					asteroids[i].y += cos(50) * asteroid->Espeed; 
+					asteroids[i].y +=  asteroid->Espeed; 
 			
 			}
 		}
@@ -105,27 +99,27 @@ void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, i
 			{
 			
 					asteroids[i].x -= sin(asteroids[i].randAngle) * asteroid->Espeed;
-					asteroids[i].y -= cos(50) * asteroid->Espeed; 
+					asteroids[i].y -=  asteroid->Espeed; 
 			
 			}
 			else if(asteroids[i].randSpawnX == 1)
 			{
 			
 					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
-					asteroids[i].y -= cos(50) * asteroid->Espeed; 
+					asteroids[i].y -=  asteroid->Espeed; 
 			
 			}
 			else if(asteroids[i].randSpawnX == 2)
 			{
 			
 					asteroids[i].x += sin(asteroids[i].randAngle) * asteroid->Espeed;
-					asteroids[i].y -= cos(50) * asteroid->Espeed; 
+					asteroids[i].y -=  asteroid->Espeed; 
 			
 			}
 
 		}
 
-		asteroids[i].asteroid.setPosition(asteroids[i].x, asteroids[i].y);
+		
 	}
 }
 
@@ -142,7 +136,7 @@ int main()
 	app.setFramerateLimit(60);
 
 	float bulletSpawn;
-	bool isGameOver = false;
+	
 
 	std::vector<bullet> bullets;
 	std::vector<enemy> asteroids;
@@ -172,7 +166,7 @@ int main()
 	int enemySpawnX[3] = {10, 300, 599};
 	int enemySpawnY[2] = {10, 590};
 
-	
+
 	while (app.isOpen())
 	{
 		while (app.pollEvent(e))
@@ -186,9 +180,10 @@ int main()
 		
 		ptrEnemy->randSpawnX = rand()% 3;
 		ptrEnemy->randSpawnY = rand()% 2;
-	
 		
-	
+		
+	if(ptrCollision->isGameOver != true)
+	{
 
 		bulletSpawn = bulletClock.getElapsedTime().asSeconds();
 
@@ -196,17 +191,21 @@ int main()
 
 		ptrCollision->ShipCollisionToWorld(ptrShip);
 
-		
-	if(isGameOver != true)
-	{
+		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed);
+
+		ptrCollision->bulletsCollision(bullets);
+	
+	
 		//bullet
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
+
+			Bullet.x = ptrShip->x;
+			Bullet.y = ptrShip->y;
+			Bullet.currentAngle = ptrShip->angle;
+
 			if(bulletSpawn >= 0.5)
 			{
-				Bullet.x = ptrShip->x;
-				Bullet.y = ptrShip->y;
-				Bullet.currentAngle = ptrShip->angle;
 				bullets.push_back(bullet(Bullet));
 				bulletClock.restart();
 			}
@@ -217,50 +216,37 @@ int main()
 
 			bullets[i].x += sin(bullets[i].currentAngle) * 10.0f;
 			bullets[i].y -= cos(bullets[i].currentAngle) * 10.0f;
+
 			bullets[i].Bullet.setPosition(bullets[i].x,bullets[i].y);
 
-
-			
-			
 		}
 
-		ptrCollision->bulletsCollision(bullets);
+		
 		
 	}
+		
+			std::cout << ptrCollision->isGameOver << std::endl;
 
 		app.clear();
 
 
-		if(isGameOver != true)
+		
+		ptrShip->drawShip(app);
+		
+		
+		
+		for(size_t i = 0; i < bullets.size(); i++)
 		{
-			ptrShip->drawShip(app);
 		
-		
-		
-			for(size_t i = 0; i < bullets.size(); i++)
-			{
-		
-				app.draw(bullets[i].Bullet);
+			app.draw(bullets[i].Bullet);
+		}	
 
-			}	
-	
-			enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
+		if(ptrCollision->isGameOver != true)
+		{
 			enemyMove(asteroids, ptrEnemy->randSpawnY, ptrEnemy, ptrEnemy->randSpawnX);
-
-			if(ptrEnemy->isDestroyed == true)
-			{
-				//smallAsteroids.push_back(smallAsteroid(sAsteroid));
-				ptrEnemy->isDestroyed = false;
-			}
-			sAsteroidSpawn(smallAsteroids, asteroids, app, sAsteroid, ptrEnemy);
-
-
-			
-		
-			std::cout << isGameOver << std::endl;
+			enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
 		}
-			ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed, isGameOver);
-
+			
 			app.display();
 	}
 

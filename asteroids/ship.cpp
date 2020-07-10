@@ -8,12 +8,12 @@ ship::ship()
 	this->y = 300;
 	this->angle =0;
 	this->turnSpeed = 0.1;
-	this->MaxSpeed = 5;
+	this->MaxSpeed = 2.5;
 	this->speed =0;
-	this->accel = 0.5;
+	this->accel = 0.25;
 	this ->decel = 4000;
 	this->isPressed = false;
-	this->pShip.setOrigin(this->pShip.getGlobalBounds().width/2, this->pShip.getGlobalBounds().height);
+	this->pShip.setOrigin(this->pShip.getGlobalBounds().width/2, this->pShip.getGlobalBounds().height/2);
 	
 	
 	this->pShip.setPosition(x,y);
@@ -92,11 +92,12 @@ void ship::shipMove(sf::Clock deltaClock,sf::Clock& thrustClock)
 			this->isPressed = true;
 		}
 
-	this->x += sin(angle) * speed;
-	this->y -= cos(angle) * speed;
-
+	this->x += sin(this->angle) * this->speed;
+	this->y -= cos(this->angle) * this->speed;
+	
 	this->pShip.setRotation(this->angle*180/3.14);
 	this->pShip.setPosition(this->x,this->y);
 
+	
 }
 

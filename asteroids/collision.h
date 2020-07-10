@@ -13,14 +13,17 @@
 class collision
 {
 private:
+	int collisionDistance;
 	
 
 public:
+
+	bool isGameOver;
 
 	void ShipCollisionToWorld(ship *Ship);
 
 	void bulletsCollision(std::vector<bullet>& bullets);
 
-	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed, bool isGameOver);
+	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed);
 
 };

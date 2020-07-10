@@ -14,7 +14,6 @@ public:
 	sf::RectangleShape pShip;
 	float x,y, speed;
 	float turnSpeed, angle, MaxSpeed, accel, decel;
-	
 
 	ship();
 	~ship();

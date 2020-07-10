@@ -13,15 +13,15 @@ public:
 
 	sf::RectangleShape asteroid;
 	float x,y, Espeed;
-	float velocity;
 	float EnemySpawn;
 	float randAngle;
-	int randSpawnX;
-	int randSpawnY;
+	int randSpawnX, randSpawnY;
 	bool isDestroyed;
 
 	enemy();
 	~enemy();
+
+	
 
 
 private:	
