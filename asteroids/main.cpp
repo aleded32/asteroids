@@ -34,7 +34,7 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 		}
 }
 
-void sAsteroidSpawn(std::vector<smallAsteroid>& sAsteroids, std::vector<enemy>& asteroids, sf::RenderWindow& app, smallAsteroid sAsteroid, enemy *asteroid)
+/*void sAsteroidSpawn(std::vector<smallAsteroid>& sAsteroids, std::vector<enemy>& asteroids, sf::RenderWindow& app, smallAsteroid sAsteroid, enemy *asteroid)
 {
 
 	sAsteroid.x = asteroid->x;
@@ -54,7 +54,7 @@ void sAsteroidSpawn(std::vector<smallAsteroid>& sAsteroids, std::vector<enemy>& 
 	}
 
 
-}
+}*/
 
 
 void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, int randSpawnX)
@@ -164,7 +164,7 @@ int main()
 
 	//enemySpawn;
 	int enemySpawnX[3] = {10, 300, 599};
-	int enemySpawnY[2] = {10, 590};
+	int enemySpawnY[2] = {20, 580};
 
 
 	while (app.isOpen())
@@ -191,9 +191,9 @@ int main()
 
 		ptrCollision->ShipCollisionToWorld(ptrShip);
 
-		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed);
-
 		ptrCollision->bulletsCollision(bullets);
+
+		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed);
 	
 	
 		//bullet
@@ -225,8 +225,7 @@ int main()
 		
 	}
 		
-			std::cout << ptrCollision->isGameOver << std::endl;
-
+			
 		app.clear();
 
 

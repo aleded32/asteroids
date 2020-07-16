@@ -43,25 +43,28 @@ void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bulle
 	
 	this->isGameOver = false;
 	
-	for(size_t i = 0; i < enemies.size(); i++)
+	for(int i = 0; i < enemies.size(); i++)
 	{
 
-		for(size_t j = 0; j < bullets.size(); j++)
+		for(int j = 0; j < bullets.size(); j++)
 		{
 			collisionDistance = sqrt(powf(enemies[i].x - bullets[j].x, 2.0f) + powf(enemies[i].y - bullets[j].y, 2.0f));
 
-			if(collisionDistance < 60)
-			{
-				enemies.erase(enemies.begin() + i);
-				bullets.erase(bullets.begin() + j);
-			}
-			else if(enemies[i].y > 599 || enemies[i].y < 0 || enemies[i].x > 599 || enemies[i].x < 0)
+			
+
+			if(enemies[i].y > 599 || enemies[i].y < 0 || enemies[i].x > 599 || enemies[i].x < 0)
 			{
 			enemies.erase(enemies.begin() + i);
 			}
 			else if(enemies[i].asteroid.getGlobalBounds().intersects(Ship->pShip.getGlobalBounds()))
 			{
 				this->isGameOver = true;
+			}
+			else if(collisionDistance < 60)
+			{
+				bullets.erase(bullets.begin() + j);
+				enemies.erase(enemies.begin() + i);
+				
 			}
 				
 		}
