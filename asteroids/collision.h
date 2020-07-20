@@ -6,6 +6,7 @@
 #include "ship.h"
 #include "bullets.h"
 #include "enemy.h"
+#include "player.h"
 #include <vector>
 
 
@@ -24,6 +25,6 @@ public:
 
 	void bulletsCollision(std::vector<bullet>& bullets);
 
-	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed);
+	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed, player *Player);
 
 };

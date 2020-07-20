@@ -21,7 +21,7 @@ enemy::~enemy()
 smallAsteroid::smallAsteroid()
 {
 	this->asteroid.setSize(sf::Vector2f(35,35));
-	this->asteroid.setFillColor(sf::Color::Green);
+	this->asteroid.setFillColor(sf::Color::Red);
 	this->Espeed = 1.5f;
 
 }

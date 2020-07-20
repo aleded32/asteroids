@@ -37,38 +37,49 @@ void collision::bulletsCollision(std::vector<bullet>& bullets)
 }
 
 
-void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed)
+void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed, player *Player)
 {
 	
+	//this->isGameOver = false;
 	
-	this->isGameOver = false;
-	
-	for(int i = 0; i < enemies.size(); i++)
+	for(size_t i = 0; i < enemies.size(); i++)
 	{
+		if(Ship->pShip.getGlobalBounds().intersects(enemies[i].asteroid.getGlobalBounds()))
+			{
+				Player->lives -= 1;
+				Ship->x = 300;
+				Ship->y = 300;
+			}
 
-		for(int j = 0; j < bullets.size(); j++)
+		for(size_t j = 0; j < bullets.size(); j++)
 		{
 			collisionDistance = sqrt(powf(enemies[i].x - bullets[j].x, 2.0f) + powf(enemies[i].y - bullets[j].y, 2.0f));
 
-			
-
 			if(enemies[i].y > 599 || enemies[i].y < 0 || enemies[i].x > 599 || enemies[i].x < 0)
 			{
+			
 			enemies.erase(enemies.begin() + i);
-			}
-			else if(enemies[i].asteroid.getGlobalBounds().intersects(Ship->pShip.getGlobalBounds()))
-			{
-				this->isGameOver = true;
+			
 			}
 			else if(collisionDistance < 60)
 			{
-				bullets.erase(bullets.begin() + j);
-				enemies.erase(enemies.begin() + i);
 				
+				enemies.erase(enemies.begin() + i);
+				bullets.erase(bullets.begin() + j);
+				Player->score += 1;
+				
+
+			
 			}
 				
 		}
-	}
 
 	
+	}
+
+	if(Player->lives <= 0)
+	{
+		this->isGameOver = true;
+		
+	}
 }

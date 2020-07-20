@@ -8,6 +8,7 @@
 #include "enemy.h"
 #include "stdlib.h"
 #include <vector>
+#include "player.h"
 
 
 void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& asteroidSpawning, int randSpawnX, int randSpawnY,int enemySpawnX[3], int enemySpawnY[2], enemy asteroid, sf::RenderWindow& app)
@@ -37,19 +38,20 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 /*void sAsteroidSpawn(std::vector<smallAsteroid>& sAsteroids, std::vector<enemy>& asteroids, sf::RenderWindow& app, smallAsteroid sAsteroid, enemy *asteroid)
 {
 
-	sAsteroid.x = asteroid->x;
-	sAsteroid.y = asteroid->y;
+	sAsteroids.push_back(smallAsteroid(sAsteroid));
 
-	for(size_t i = 0; i < sAsteroids.size(); i++)
+	for(size_t j = 0; j < asteroids.size(); j++)
 	{
-		
-			
+		for(size_t i = 0; i < sAsteroids.size(); i++)
+		{
+			sAsteroids[i].x = asteroid[j].x;
+			sAsteroids[i].y = asteroid[j].y;
 
 			app.draw(sAsteroids[i].asteroid);
 
 
 			sAsteroids[i].asteroid.setPosition(sAsteroids[i].x, sAsteroids[i].y);
-			
+		}	
 		
 	}
 
@@ -147,6 +149,7 @@ int main()
 	collision *ptrCollision;
 	enemy *ptrEnemy;
 	smallAsteroid *ptrSAsteroid;
+	player *ptrPlayer;
 	
 	//classes
 	ship Ship;
@@ -154,6 +157,7 @@ int main()
 	bullet Bullet(Ship);
 	enemy asteroid;
 	smallAsteroid sAsteroid;
+	player Player;
 	
 
 	//point to class
@@ -161,6 +165,7 @@ int main()
 	ptrCollision = &Collision;
 	ptrEnemy = &asteroid;
 	ptrSAsteroid = &sAsteroid;
+	ptrPlayer = &Player;
 
 	//enemySpawn;
 	int enemySpawnX[3] = {10, 300, 599};
@@ -193,7 +198,7 @@ int main()
 
 		ptrCollision->bulletsCollision(bullets);
 
-		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed);
+		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed, ptrPlayer);
 	
 	
 		//bullet
@@ -232,7 +237,7 @@ int main()
 		
 		ptrShip->drawShip(app);
 		
-		
+		ptrPlayer->drawScore(app);
 		
 		for(size_t i = 0; i < bullets.size(); i++)
 		{
@@ -244,6 +249,7 @@ int main()
 		{
 			enemyMove(asteroids, ptrEnemy->randSpawnY, ptrEnemy, ptrEnemy->randSpawnX);
 			enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
+			
 		}
 			
 			app.display();
