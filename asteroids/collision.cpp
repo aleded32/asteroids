@@ -83,3 +83,14 @@ void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bulle
 		
 	}
 }
+
+void collision::powerupCollision(std::vector<powerup>& powerups, ship *Ship)
+{
+	for(int i = 0; i < powerups.size(); i++)
+	{
+		if(powerups[i].x < 0 || powerups[i].y  < 0 || powerups[i].x > 599 || powerups[i].y > 599)
+		{
+			powerups.erase(powerups.begin() + i);
+		}
+	}
+}

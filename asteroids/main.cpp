@@ -9,6 +9,7 @@
 #include "stdlib.h"
 #include <vector>
 #include "player.h"
+#include "powerup.h"
 
 
 void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& asteroidSpawning, int randSpawnX, int randSpawnY,int enemySpawnX[3], int enemySpawnY[2], enemy asteroid, sf::RenderWindow& app)
@@ -33,6 +34,36 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 
 			app.draw(asteroids[i].asteroid);
 		}
+}
+
+void powerupSpawn(std::vector<powerup>& powerups, powerup Powerup, int randSpawnX, int randSpawnY,int enemySpawnX[3], int enemySpawnY[2], sf::RenderWindow& app, sf::Clock& powerupClock)
+{
+	
+	Powerup.powerupTime = powerupClock.getElapsedTime().asSeconds();
+
+	Powerup.x = (float)enemySpawnX[randSpawnX];
+	Powerup.y = (float)enemySpawnY[randSpawnY];
+
+	if(powerups.size() == 0 && Powerup.powerupTime >= 20 && Powerup.powerupTime <=21)
+	{
+		powerups.push_back(powerup(Powerup));
+	}
+	else if(Powerup.powerupTime >= 40)
+	{
+		for(int i = 0; i < powerups.size(); i++)
+		{
+			powerups.erase(powerups.begin() + i);
+		}
+		powerupClock.restart();
+	}
+
+	for(int i = 0; i < powerups.size(); i++)
+		{
+			powerups[i].powerupImg.setPosition(powerups[i].x, powerups[i].y);
+
+			app.draw(powerups[i].powerupImg);
+		}
+
 }
 
 /*void sAsteroidSpawn(std::vector<smallAsteroid>& sAsteroids, std::vector<enemy>& asteroids, sf::RenderWindow& app, smallAsteroid sAsteroid, enemy *asteroid)
@@ -125,6 +156,71 @@ void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, i
 	}
 }
 
+void powerupMove(std::vector<powerup>& powerups, powerup Powerup, int randSpawnY, int randSpawnX)
+{
+	int  i = 0;
+
+	for(i = 0; i< powerups.size(); i++)
+	{
+		if(powerups[i].randSpawnY == 0)
+		{
+				Powerup.randAngle = rand()%90 + 50;
+
+			if(powerups[i].randSpawnX == 0)
+			{
+			
+					powerups[i].x -= sin(powerups[i].randAngle) * Powerup.speed;
+					powerups[i].y += Powerup.speed; 
+
+			
+			}
+			else if(powerups[i].randSpawnX == 1)
+			{
+		
+					powerups[i].x += sin(powerups[i].randAngle) * Powerup.speed;
+					powerups[i].y += Powerup.speed; 
+			
+			}
+			else if(powerups[i].randSpawnX == 2)
+			{
+			
+					powerups[i].x += sin(powerups[i].randAngle) * Powerup.speed;
+					powerups[i].y += Powerup.speed; 
+			
+			}
+		}
+		else if(powerups[i].randSpawnY == 1)
+		{
+			Powerup.randAngle = rand()%90;
+
+			if(powerups[i].randSpawnX == 0)
+			{
+			
+					powerups[i].x -= sin(powerups[i].randAngle) * Powerup.speed;
+					powerups[i].y -=  Powerup.speed; 
+			
+			}
+			else if(powerups[i].randSpawnX == 1)
+			{
+			
+					powerups[i].x += sin(powerups[i].randAngle) * Powerup.speed;
+					powerups[i].y -=  Powerup.speed; 
+			
+			}
+			else if(powerups[i].randSpawnX == 2)
+			{
+			
+					powerups[i].x += sin(powerups[i].randAngle) * Powerup.speed;
+					powerups[i].y -= Powerup.speed; 
+			
+			}
+
+		}
+
+		
+	}
+}
+
 
 int main()
 {
@@ -135,6 +231,8 @@ int main()
 	sf::Clock bulletClock;
 	sf::Clock thrustClock;
 	sf::Clock asteroidSpawn;
+	sf::Clock shieldClock;
+	sf::Clock powerupClock;
 	app.setFramerateLimit(60);
 
 	float bulletSpawn;
@@ -142,7 +240,8 @@ int main()
 
 	std::vector<bullet> bullets;
 	std::vector<enemy> asteroids;
-	std::vector<smallAsteroid> smallAsteroids;
+	//std::vector<smallAsteroid> smallAsteroids;
+	std::vector<powerup> powerups;
 
 	//pointers to class
 	ship *ptrShip;
@@ -150,6 +249,8 @@ int main()
 	enemy *ptrEnemy;
 	smallAsteroid *ptrSAsteroid;
 	player *ptrPlayer;
+	shield *ptrShield;
+	rapidFire *ptrRapidFire;
 	
 	//classes
 	ship Ship;
@@ -158,6 +259,10 @@ int main()
 	enemy asteroid;
 	smallAsteroid sAsteroid;
 	player Player;
+	powerup Powerup;
+	shield Shield(Ship);
+	rapidFire RapidFire;
+
 	
 
 	//point to class
@@ -166,6 +271,10 @@ int main()
 	ptrEnemy = &asteroid;
 	ptrSAsteroid = &sAsteroid;
 	ptrPlayer = &Player;
+	ptrRapidFire = &RapidFire;
+	ptrShield = &Shield;
+
+	
 
 	//enemySpawn;
 	int enemySpawnX[3] = {10, 300, 599};
@@ -185,7 +294,8 @@ int main()
 		
 		ptrEnemy->randSpawnX = rand()% 3;
 		ptrEnemy->randSpawnY = rand()% 2;
-		
+		Powerup.randSpawnX = rand()% 3;
+		Powerup.randSpawnY = rand()% 2;
 		
 	if(ptrCollision->isGameOver != true)
 	{
@@ -199,6 +309,8 @@ int main()
 		ptrCollision->bulletsCollision(bullets);
 
 		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed, ptrPlayer);
+		
+		ptrCollision->powerupCollision(powerups, ptrShip);
 	
 	
 		//bullet
@@ -249,7 +361,9 @@ int main()
 		{
 			enemyMove(asteroids, ptrEnemy->randSpawnY, ptrEnemy, ptrEnemy->randSpawnX);
 			enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
-			
+			powerupMove(powerups, Powerup, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY);
+			powerupSpawn(powerups, Powerup,  ptrEnemy->randSpawnX, ptrEnemy->randSpawnY, enemySpawnX, enemySpawnY, app, powerupClock);
+			std::cout << powerups.size() << std::endl;
 		}
 			
 			app.display();
