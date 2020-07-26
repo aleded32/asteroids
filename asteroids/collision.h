@@ -21,6 +21,10 @@ private:
 public:
 
 	bool isGameOver;
+	bool powerupActive;
+
+	collision();
+	~collision();
 
 	void ShipCollisionToWorld(ship *Ship);
 
@@ -29,5 +33,6 @@ public:
 	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed, player *Player);
 
 	void powerupCollision(std::vector<powerup>& powerups, ship *Ship);
+	
 
 };

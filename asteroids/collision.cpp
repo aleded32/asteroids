@@ -1,6 +1,17 @@
 #include "collision.h"
 
 
+collision::collision()
+{
+	this->isGameOver = false;
+	this->powerupActive = false;
+}
+
+collision::~collision()
+{
+
+}
+
 void collision::ShipCollisionToWorld(ship *Ship)
 {
 	if(Ship->x + Ship->pShip.getGlobalBounds().width/2 <= 0)
@@ -92,5 +103,12 @@ void collision::powerupCollision(std::vector<powerup>& powerups, ship *Ship)
 		{
 			powerups.erase(powerups.begin() + i);
 		}
+		else if  (Ship->pShip.getGlobalBounds().intersects(powerups[i].powerupImg.getGlobalBounds()))
+		{
+			powerups.erase(powerups.begin() + i);
+			this->powerupActive = true;
+		}
 	}
 }
+
+

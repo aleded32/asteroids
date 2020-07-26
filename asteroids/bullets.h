@@ -17,6 +17,7 @@ public:
 	float x,y, Bspeed;
 	float velocity;
 	float bulletSpawn;
+	float bulletSpawnTime;
 	float currentAngle;
 	bullet(ship Ship);
 	~bullet();

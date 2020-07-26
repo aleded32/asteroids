@@ -64,7 +64,7 @@ rapidFire::~rapidFire()
 
 }
 
-void rapidFire::changeSpawn(bullet Bullet)
+void rapidFire::changeSpawn(bullet& Bullet)
 {
-	Bullet.bulletSpawn = this->newBulletSpawn;
+	Bullet.bulletSpawnTime = this->newBulletSpawn;
 }

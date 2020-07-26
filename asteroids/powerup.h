@@ -19,6 +19,7 @@ public:
 	float radius;
 	float speed;
 	float randAngle, powerupTime;
+	float randPowerup;
 
 	powerup();
 	~powerup();
@@ -54,7 +55,7 @@ public:
 	rapidFire();
 	~rapidFire();
 
-	void changeSpawn(bullet Bullet);
+	void changeSpawn(bullet& Bullet);
 
 private:
 

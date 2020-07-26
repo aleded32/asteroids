@@ -44,11 +44,11 @@ void powerupSpawn(std::vector<powerup>& powerups, powerup Powerup, int randSpawn
 	Powerup.x = (float)enemySpawnX[randSpawnX];
 	Powerup.y = (float)enemySpawnY[randSpawnY];
 
-	if(powerups.size() == 0 && Powerup.powerupTime >= 20 && Powerup.powerupTime <=21)
+	if(powerups.size() == 0 && Powerup.powerupTime >= 4 && Powerup.powerupTime <=5)
 	{
 		powerups.push_back(powerup(Powerup));
 	}
-	else if(Powerup.powerupTime >= 40)
+	else if(Powerup.powerupTime >= 10)
 	{
 		for(int i = 0; i < powerups.size(); i++)
 		{
@@ -88,6 +88,24 @@ void powerupSpawn(std::vector<powerup>& powerups, powerup Powerup, int randSpawn
 
 
 }*/
+
+void powerupActive(sf::Clock& rapidFireClock, collision *ptrCollision, rapidFire *ptrRapidFire, powerup& Powerup, bullet& Bullet)
+{
+	Powerup.powerupTime = rapidFireClock.getElapsedTime().asSeconds();
+	Powerup.randPowerup = 0;
+
+	if(Powerup.powerupTime <= 6 && Powerup.randPowerup == 0)
+	{
+		ptrRapidFire->changeSpawn(Bullet);
+		std::cout << 1;
+	}
+	else if(Powerup.powerupTime > 6)
+	{
+		rapidFireClock.restart();
+		ptrCollision->powerupActive = false;
+	}
+
+}
 
 
 void enemyMove(std::vector<enemy>& asteroids, int randSpawnY ,enemy *asteroid, int randSpawnX)
@@ -233,6 +251,7 @@ int main()
 	sf::Clock asteroidSpawn;
 	sf::Clock shieldClock;
 	sf::Clock powerupClock;
+	sf::Clock rapidFireClock;
 	app.setFramerateLimit(60);
 
 	float bulletSpawn;
@@ -280,6 +299,8 @@ int main()
 	int enemySpawnX[3] = {10, 300, 599};
 	int enemySpawnY[2] = {20, 580};
 
+	
+
 
 	while (app.isOpen())
 	{
@@ -311,7 +332,10 @@ int main()
 		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed, ptrPlayer);
 		
 		ptrCollision->powerupCollision(powerups, ptrShip);
-	
+		
+		//powerups
+		
+			
 	
 		//bullet
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
@@ -321,7 +345,7 @@ int main()
 			Bullet.y = ptrShip->y;
 			Bullet.currentAngle = ptrShip->angle;
 
-			if(bulletSpawn >= 0.5)
+			if(bulletSpawn >= Bullet.bulletSpawnTime)
 			{
 				bullets.push_back(bullet(Bullet));
 				bulletClock.restart();
@@ -338,11 +362,16 @@ int main()
 
 		}
 
+		if(ptrCollision->powerupActive == true)
+		{
+			powerupActive(rapidFireClock, ptrCollision, ptrRapidFire, Powerup, Bullet);
+		}
 		
 		
 	}
 		
-			
+
+		
 		app.clear();
 
 
@@ -363,12 +392,12 @@ int main()
 			enemySpawn(asteroids, asteroidSpawn, ptrEnemy->EnemySpawn, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY ,enemySpawnX, enemySpawnY, asteroid, app);
 			powerupMove(powerups, Powerup, ptrEnemy->randSpawnX, ptrEnemy->randSpawnY);
 			powerupSpawn(powerups, Powerup,  ptrEnemy->randSpawnX, ptrEnemy->randSpawnY, enemySpawnX, enemySpawnY, app, powerupClock);
-			std::cout << powerups.size() << std::endl;
-		}
 			
+		}
+			std::cout << ptrCollision->powerupActive << std::endl;	
 			app.display();
 	}
-
+	
 	
 	return 0;
 
