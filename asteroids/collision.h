@@ -22,15 +22,17 @@ public:
 
 	bool isGameOver;
 	bool powerupActive;
+	bool isCollided;
 
 	collision();
 	~collision();
 
-	void ShipCollisionToWorld(ship *Ship);
+	void ShipCollisionToWorld(ship *Ship, std::vector<enemy>& enemies, player *Player);
 
 	void bulletsCollision(std::vector<bullet>& bullets);
 
-	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, bool isDestroyed, player *Player);
+
+	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, player *Player);
 
 	void powerupCollision(std::vector<powerup>& powerups, ship *Ship);
 	

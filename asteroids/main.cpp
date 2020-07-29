@@ -89,21 +89,40 @@ void powerupSpawn(std::vector<powerup>& powerups, powerup Powerup, int randSpawn
 
 }*/
 
-void powerupActive(sf::Clock& rapidFireClock, collision *ptrCollision, rapidFire *ptrRapidFire, powerup& Powerup, bullet& Bullet)
+void powerupActive(sf::Clock& powerupClock, collision *ptrCollision, rapidFire *ptrRapidFire, powerup& Powerup, bullet& Bullet, shield *ptrShield, sf::RenderWindow& app, sf::Clock& shieldClock, ship *ptrShip)
 {
-	Powerup.powerupTime = rapidFireClock.getElapsedTime().asSeconds();
-	Powerup.randPowerup = 0;
+	srand(time(NULL));
+	ptrShield->shieldTime = shieldClock.getElapsedTime().asSeconds();
+	
+	if(Powerup.isPowerupActive == false)
+	{
+		Powerup.randPowerup = rand()% 2;
+		Powerup.isPowerupActive = true;
+		
+	}
 
-	if(Powerup.powerupTime <= 6 && Powerup.randPowerup == 0)
+	if(ptrShield->shieldTime <= 6 && Powerup.randPowerup == 0)
 	{
 		ptrRapidFire->changeSpawn(Bullet);
-		std::cout << 1;
+		
 	}
-	else if(Powerup.powerupTime > 6)
+	else if(ptrShield->shieldTime <= 6 && Powerup.randPowerup == 1)
 	{
-		rapidFireClock.restart();
-		ptrCollision->powerupActive = false;
+		ptrShield->shieldActive(app, shieldClock, ptrShip);
+		ptrShield->shieldImg.setFillColor(sf::Color(0,0,255,100));
+		
 	}
+	else
+	{
+		ptrShield->shieldImg.setFillColor(sf::Color::Transparent);
+		shieldClock.restart();
+		ptrCollision->powerupActive = false;
+		ptrShield->isActive = false;
+		Powerup.isPowerupActive = false;
+		ptrCollision->isCollided = false;
+	}
+	
+	
 
 }
 
@@ -325,16 +344,24 @@ int main()
 
 		ptrShip->shipMove(deltaClock, thrustClock);
 
-		ptrCollision->ShipCollisionToWorld(ptrShip);
+		ptrCollision->ShipCollisionToWorld(ptrShip, asteroids,ptrPlayer);
+
+		
 
 		ptrCollision->bulletsCollision(bullets);
 
-		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrEnemy->isDestroyed, ptrPlayer);
 		
-		ptrCollision->powerupCollision(powerups, ptrShip);
+
+		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrPlayer);
+		
+		
 		
 		//powerups
 		
+		if(ptrCollision->powerupActive == true)
+		{
+			powerupActive(powerupClock, ptrCollision, ptrRapidFire, Powerup, Bullet, ptrShield, app, shieldClock, ptrShip);
+		}
 			
 	
 		//bullet
@@ -362,22 +389,18 @@ int main()
 
 		}
 
-		if(ptrCollision->powerupActive == true)
-		{
-			powerupActive(rapidFireClock, ptrCollision, ptrRapidFire, Powerup, Bullet);
-		}
 		
 		
 	}
 		
-
+	ptrCollision->powerupCollision(powerups, ptrShip);
 		
 		app.clear();
 
 
 		
 		ptrShip->drawShip(app);
-		
+		app.draw(ptrShield->shieldImg);	
 		ptrPlayer->drawScore(app);
 		
 		for(size_t i = 0; i < bullets.size(); i++)

@@ -7,6 +7,7 @@ powerup::powerup()
 	this->radius = 20.0f;
 	this->powerupImg.setRadius(radius);
 	this->speed = 2.0f;
+	this->isPowerupActive = false;
 	
 }
 
@@ -21,11 +22,10 @@ powerup::~powerup()
 shield::shield(ship Ship)
 {
 	this->shieldImg.setFillColor(sf::Color(0,0,255,0));
-	this->radius = 20.0f;
-	this->x = Ship.x - Ship.pShip.getGlobalBounds().width/2;
-	this->y = Ship.y - Ship.pShip.getGlobalBounds().height/2;
-
-}
+	this->radius = 30.0f;
+	this->shieldImg.setRadius(radius);
+	
+}	
 
 shield::~shield()
 {
@@ -33,24 +33,16 @@ shield::~shield()
 }
 
 
-void shield::shieldActive(sf::RenderWindow& app, sf::Clock& shieldClock)
+void shield::shieldActive(sf::RenderWindow& app, sf::Clock& shieldClock, ship *Ship)
 {
-	if(this->isActive == true)
-	{
-		this->shieldTime = shieldClock.getElapsedTime().asSeconds();
-
-		if(shieldTime <= 10)
-		{
-			this->shieldImg.setFillColor(sf::Color(0,0,255,100));
-		}
-		else if(shieldTime >10)
-		{
-			this->shieldImg.setFillColor(sf::Color(0,0,255,0));
-			this->isActive = false;
-		}
-	}
 	
-	app.draw(this->shieldImg);
+		this->isActive = true;
+		this->x = Ship->x - 30;
+	    this->y = Ship->y - 30;
+
+		this->shieldImg.setPosition(this->x, this->y);
+	
+	
 }
 
 

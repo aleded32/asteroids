@@ -20,6 +20,7 @@ public:
 	float speed;
 	float randAngle, powerupTime;
 	float randPowerup;
+	bool isPowerupActive;
 
 	powerup();
 	~powerup();
@@ -35,11 +36,11 @@ public:
 	sf::CircleShape shieldImg;
 	float shieldTime;
 	bool isActive;
-
+	float x,y;
 	shield(ship Ship);
 	~shield();
 
-	void shieldActive(sf::RenderWindow& app, sf::Clock& shieldClock);
+	void shieldActive(sf::RenderWindow& app, sf::Clock& shieldClock, ship *Ship);
 
 private:
 
