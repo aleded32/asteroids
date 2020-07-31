@@ -24,6 +24,7 @@ shield::shield(ship Ship)
 	this->shieldImg.setFillColor(sf::Color(0,0,255,0));
 	this->radius = 30.0f;
 	this->shieldImg.setRadius(radius);
+	this->shieldTime = 0;
 	
 }	
 

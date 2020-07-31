@@ -15,14 +15,16 @@
 class collision
 {
 private:
-	int collisionDistance;
 	
+	int collisionDistance;
+	int collisionDistanceShield;
 
 public:
 
+	int collidedCount;
 	bool isGameOver;
 	bool powerupActive;
-	bool isCollided;
+	
 
 	collision();
 	~collision();
@@ -31,6 +33,7 @@ public:
 
 	void bulletsCollision(std::vector<bullet>& bullets);
 
+	void shieldCollision(std::vector<enemy>& enemies, shield *ptrShield);
 
 	void asteroidCollision(std::vector<enemy>& enemies, std::vector<bullet>& bullets, ship *Ship, player *Player);
 

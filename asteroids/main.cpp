@@ -44,11 +44,11 @@ void powerupSpawn(std::vector<powerup>& powerups, powerup Powerup, int randSpawn
 	Powerup.x = (float)enemySpawnX[randSpawnX];
 	Powerup.y = (float)enemySpawnY[randSpawnY];
 
-	if(powerups.size() == 0 && Powerup.powerupTime >= 4 && Powerup.powerupTime <=5)
+	if(powerups.size() == 0 && Powerup.powerupTime >= 20 && Powerup.powerupTime <=21)
 	{
 		powerups.push_back(powerup(Powerup));
 	}
-	else if(Powerup.powerupTime >= 10)
+	else if(Powerup.powerupTime >= 40)
 	{
 		for(int i = 0; i < powerups.size(); i++)
 		{
@@ -96,30 +96,32 @@ void powerupActive(sf::Clock& powerupClock, collision *ptrCollision, rapidFire *
 	
 	if(Powerup.isPowerupActive == false)
 	{
+		
 		Powerup.randPowerup = rand()% 2;
 		Powerup.isPowerupActive = true;
 		
 	}
 
-	if(ptrShield->shieldTime <= 6 && Powerup.randPowerup == 0)
+	if(ptrShield->shieldTime <= 11 && Powerup.randPowerup == 0)
 	{
 		ptrRapidFire->changeSpawn(Bullet);
 		
 	}
-	else if(ptrShield->shieldTime <= 6 && Powerup.randPowerup == 1)
+	else if(ptrShield->shieldTime <= 11 && Powerup.randPowerup == 1)
 	{
 		ptrShield->shieldActive(app, shieldClock, ptrShip);
 		ptrShield->shieldImg.setFillColor(sf::Color(0,0,255,100));
 		
 	}
-	else
+	else if(ptrShield->shieldTime > 11)
 	{
 		ptrShield->shieldImg.setFillColor(sf::Color::Transparent);
 		shieldClock.restart();
-		ptrCollision->powerupActive = false;
+		ptrCollision->collidedCount = 0;
 		ptrShield->isActive = false;
 		Powerup.isPowerupActive = false;
-		ptrCollision->isCollided = false;
+		Bullet.bulletSpawnTime = 0.5;
+		
 	}
 	
 	
@@ -350,7 +352,7 @@ int main()
 
 		ptrCollision->bulletsCollision(bullets);
 
-		
+		ptrCollision->shieldCollision(asteroids, ptrShield);
 
 		ptrCollision->asteroidCollision(asteroids, bullets, ptrShip, ptrPlayer);
 		
@@ -358,9 +360,15 @@ int main()
 		
 		//powerups
 		
+		
 		if(ptrCollision->powerupActive == true)
 		{
 			powerupActive(powerupClock, ptrCollision, ptrRapidFire, Powerup, Bullet, ptrShield, app, shieldClock, ptrShip);
+		}
+		else
+		{
+			shieldClock.restart();
+			ptrShield->shieldTime = 0;
 		}
 			
 	
@@ -417,7 +425,7 @@ int main()
 			powerupSpawn(powerups, Powerup,  ptrEnemy->randSpawnX, ptrEnemy->randSpawnY, enemySpawnX, enemySpawnY, app, powerupClock);
 			
 		}
-			std::cout << ptrCollision->powerupActive << std::endl;	
+				
 			app.display();
 	}
 	
