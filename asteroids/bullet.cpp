@@ -8,7 +8,7 @@ bullet::bullet(ship Ship)
 	this->Bspeed = 5.0f;
 	this->x = Ship.x - Ship.pShip.getGlobalBounds().width/2;
 	this->y = Ship.y;
-	this->bulletSpawnTime = 0.5;
+	this->bulletSpawnTime = 0.75;
 	
 }
 

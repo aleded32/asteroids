@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include "player.h"
 
 
 
@@ -19,7 +20,7 @@ public:
 	~ship();
 
 	void drawShip(sf::RenderWindow& app);
-	void shipMove(sf::Clock deltaClock, sf::Clock& thrustClock);
+	void shipMove(sf::Clock deltaClock, sf::Clock& thrustClock, player *ptrPlayer);
 
 private:
 

@@ -11,6 +11,10 @@ public:
 
 	int lives;
 	int score;
+	float maxSizeX;
+	float maxSizeY;
+	sf::RectangleShape thrustBar;
+	
 	player();
 	~player();
 
@@ -21,6 +25,7 @@ private:
 	sf::Font font;
 	sf::Text scoreText;
 	sf::Text livesText;
+	sf::Text thrustBarText;
 	
 	
 

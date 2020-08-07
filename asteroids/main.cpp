@@ -21,7 +21,7 @@ void enemySpawn(std::vector<enemy>& asteroids, sf::Clock& asteroidSpawn, float& 
 	asteroid.x = (float)enemySpawnX[randSpawnX];
 	asteroid.y = (float)enemySpawnY[randSpawnY];
 
-	if(asteroidSpawning >= 1)
+	if(asteroidSpawning >= 0.5)
 	{
 		asteroids.push_back(enemy(asteroid));	
 		asteroidSpawn.restart();
@@ -291,6 +291,7 @@ int main()
 	player *ptrPlayer;
 	shield *ptrShield;
 	rapidFire *ptrRapidFire;
+ 
 	
 	//classes
 	ship Ship;
@@ -313,13 +314,14 @@ int main()
 	ptrPlayer = &Player;
 	ptrRapidFire = &RapidFire;
 	ptrShield = &Shield;
+	ptrEnemy = &asteroid;
 
 	
 
 	//enemySpawn;
 	int enemySpawnX[3] = {10, 300, 599};
 	int enemySpawnY[2] = {20, 580};
-
+	bool isPressed = false;
 	
 
 
@@ -344,7 +346,7 @@ int main()
 
 		bulletSpawn = bulletClock.getElapsedTime().asSeconds();
 
-		ptrShip->shipMove(deltaClock, thrustClock);
+		ptrShip->shipMove(deltaClock, thrustClock, ptrPlayer);
 
 		ptrCollision->ShipCollisionToWorld(ptrShip, asteroids,ptrPlayer);
 
@@ -373,9 +375,10 @@ int main()
 			
 	
 		//bullet
+
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
-
+			isPressed = true;
 			Bullet.x = ptrShip->x;
 			Bullet.y = ptrShip->y;
 			Bullet.currentAngle = ptrShip->angle;
@@ -387,6 +390,7 @@ int main()
 			}
 		}
 		
+
 		for(size_t i = 0; i < bullets.size(); i++)
 		{
 
@@ -409,7 +413,7 @@ int main()
 		
 		ptrShip->drawShip(app);
 		app.draw(ptrShield->shieldImg);	
-		ptrPlayer->drawScore(app);
+		
 		
 		for(size_t i = 0; i < bullets.size(); i++)
 		{
@@ -425,7 +429,7 @@ int main()
 			powerupSpawn(powerups, Powerup,  ptrEnemy->randSpawnX, ptrEnemy->randSpawnY, enemySpawnX, enemySpawnY, app, powerupClock);
 			
 		}
-				
+		ptrPlayer->drawScore(app);		
 			app.display();
 	}
 	

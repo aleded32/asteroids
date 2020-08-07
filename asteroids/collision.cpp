@@ -5,7 +5,7 @@ collision::collision()
 {
 	this->isGameOver = false;
 	this->powerupActive = false;
-	
+	this->isEnemyDead = false;
 	this->collidedCount = 0;
 
 }
@@ -69,32 +69,39 @@ void collision::asteroidCollision(std::vector<enemy>& enemies, std::vector<bulle
 	for(size_t j = 0; j < bullets.size(); j++)
 	{
 
-		for(size_t i = 0; i < enemies.size(); i++)
+		for(size_t i = 0; i < enemies.size();i++)
 		{
-			this->collisionDistance = sqrt(powf(enemies[i].x - bullets[j].x, 2.0f) + powf(enemies[i].y - bullets[j].y, 2.0f));
-
-			if(this->collisionDistance < 60)
-			{			
+			if(bullets[j].Bullet.getGlobalBounds().intersects(enemies[i].asteroid.getGlobalBounds()))
+			{		
+				
+				std::cout << 1 << std::endl;
+				isEnemyDead = true;
+				
 				enemies.erase(enemies.begin() + i);
+				
+
 				Player->score += 1;
-			}
-			else if(this->collisionDistance < 60)
-			{
-				bullets.erase(bullets.begin() + j);
 			}
 			else if(enemies[i].y > 599 || enemies[i].y < 0 || enemies[i].x > 599 || enemies[i].x < 0)
 			{
 				enemies.erase(enemies.begin() + i);
 			}
 			
+				
+			
+			
+			//std::cout << enemies[i] << std::endl;
 		}
 		
-		
+		if(isEnemyDead == true)
+				{
+					bullets.erase(bullets.begin() + j);
+				}
 		
 
 	}
 
-	
+	isEnemyDead = false;
 
 	if(Player->lives <= 0)
 	{

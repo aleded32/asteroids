@@ -24,7 +24,7 @@ public:
 	int collidedCount;
 	bool isGameOver;
 	bool powerupActive;
-	
+	bool isEnemyDead;
 
 	collision();
 	~collision();
